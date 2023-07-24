@@ -1,5 +1,9 @@
 ## Josh Duncan - GitHub@joshduncan.net
-## 2023-07-34
+## 2023-07-24
+#
+## This script will get all the users that have a PIM role assigned
+## It will then query each of those users and identify the different types of MFA configured and what is the default.
+## The data will be saved to a CSV file and output to the console.
 #
 ## KNOWN ISSUES ##
 ## - No known issues
@@ -60,7 +64,8 @@ catch
 
 Write-Host ""
 write-host "Getting Privileged Role Assigmnents" -NoNewLine
-try{
+try
+{
     # Get all the usres that have access to a privileged role assignment
     # Using the SubjectID and -unique flag, ensure only 1 entry for each user is returned 
     $PIMUsers = Get-AzureADMSPrivilegedRoleAssignment -ProviderId aadRoles -ResourceId $strResourceID | Select-Object SubjectId -Unique
@@ -89,14 +94,11 @@ foreach ($user in $PIMUsers)
         $tempRecord = [PSCustomObject]@{
             UserPrincipalName = $UserObject.UserPrincipalName
         }
-
         write-host ("  - " + $UserObject.UserPrincipalName + "...")
-
         foreach ($MFA in $UserMFA)
         {   
             # Create a new "column" for each MFA type and identify the default.  This should help make sure if a new type is added that this doesn't have to be updated
             $tempRecord | Add-Member -MemberType NoteProperty -Name $MFA.MethodType -Value $MFA.IsDefault
-            
         }
         # add the temp record to the final array.
         $arrayPIMData += $tempRecord

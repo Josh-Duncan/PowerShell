@@ -1,5 +1,6 @@
 ## Josh Duncan - GitHub@joshduncan.net
 ## 2023-07-24
+## https://github.com/Josh-Duncan/PowerShell/wiki/Auditing-Get%E2%80%90PIM_Users_MFA.ps1
 #
 ## This script will get all the users that have a PIM role assigned
 ## It will then query each of those users and identify the different types of MFA configured and what is the default.
